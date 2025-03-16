@@ -3,6 +3,9 @@ import random
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfVectorizer
 import streamlit as st
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.ensemble import RandomForestClassifier
 
 tags = []
 patterns = []
@@ -17,21 +20,27 @@ for intent in intents['intents']:
         patterns.append(pattern)
         tags.append(intent['tag'])
 
-vector = TfidfVectorizer()
+# vector = TfidfVectorizer(ngram_range=(1,2))
+# patterns_scaled = vector.fit_transform(patterns)
+vector = CountVectorizer(ngram_range=(1,2))
 patterns_scaled = vector.fit_transform(patterns)
 
-Bot = LogisticRegression(max_iter=100000)
-Bot.fit(patterns_scaled, tags)
+# Bot = LogisticRegression(max_iter=100000)
+# Bot.fit(patterns_scaled, tags)
+# Bot = MultinomialNB()
+# Bot.fit(patterns_scaled.toarray(), tags)
+Bot = RandomForestClassifier(n_estimators=100,random_state=42)
+Bot.fit(patterns_scaled.toarray(), tags)
 
 def ChatBot(input_message):
     input_message = vector.transform([input_message])
     pred_tag = Bot.predict(input_message)[0]
     for intent in intents['intents']:
         if intent['tag'] == pred_tag:
-            responses = random.choice(intent['responses'])
-            return responses
+            response = random.choice(intent['responses'])
+            return response
 
-# App
+# # App
 st.title('Mental Health ChatBot AI')
 
 #Init chat history
