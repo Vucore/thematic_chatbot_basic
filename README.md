@@ -1,3 +1,3 @@
 # thematic_chatbot_basic
-Chatbot
+Mental Health ChatBot AI
 ![alt text](demo/image.png)
