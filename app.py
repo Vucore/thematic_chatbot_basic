@@ -29,7 +29,7 @@ patterns_scaled = vector.fit_transform(patterns)
 # Bot.fit(patterns_scaled, tags)
 # Bot = MultinomialNB()
 # Bot.fit(patterns_scaled.toarray(), tags)
-Bot = RandomForestClassifier(n_estimators=150)
+Bot = RandomForestClassifier(n_estimators=300)
 Bot.fit(patterns_scaled.toarray(), tags)
 
 def ChatBot(input_message):
